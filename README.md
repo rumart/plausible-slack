@@ -49,10 +49,3 @@ docker run --rm --env-file env.list rumart/plausibleslack:0.3.0
 ```
 docker build -t plausibleslack:<tag> .
 ```
-
-## SLACK_TOKEN Environment variable
-## SLACK_CHANNEL Environment variable
-## PLAUSIBLE_HOST Environment variable
-## PLAUSIBLE_TOKEN Environment variable
-## SITE_ID Environment variable
-## LOGLEVEL Environment variable
