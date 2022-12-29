@@ -49,7 +49,9 @@ wVisitors = wResponse['results']['visitors']['value']
 wPageViews = wResponse['results']['pageviews']['value']
 
 cVisitors = get_change(visitors,wVisitors)
+cVisitorsTxt = "%.2f" % cVisitors
 cPageViews = get_change(pageViews,wPageViews)
+cPageViewsTxt = "%.2f" % cPageViews
 
 visitorChange = ''
 if visitors > wVisitors:
@@ -68,7 +70,7 @@ try:
 
     response = client.chat_postMessage(
         channel=SLACK_CHANNEL,
-        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors yesterday! That\'s {cPageViews}% {pageViewChange} pageviews and {cVisitors}% {visitorChange} visitors than last week'
+        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors yesterday!\nThat\'s {cPageViewsTxt}% {pageViewChange} pageviews and {cVisitorsTxt}% {visitorChange} visitors than last week'
     )
 except SlackApiError as e:
     # You will get a SlackApiError if "ok" is False
