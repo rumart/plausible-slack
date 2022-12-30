@@ -19,7 +19,7 @@ The script accepts the environment variables:
 - LOGLEVEL
     - Log level, defaults to INFO
 - PERIOD
-    - Stat period, day or week (last 7 days) supported
+    - Stat period, day or week (last 7 days) supported. Defaults to day
 
 ## Run as a container
 
