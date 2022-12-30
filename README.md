@@ -35,6 +35,7 @@ Pass environments in a file
 
 ```
 LOGLEVEL=debug
+PERIOD=week
 SLACK_TOKEN=xoxb-xxxxxxxx
 SLACK_CHANNEL=Cxxxxxx
 PLAUSIBLE_HOST=plausible.xyz
@@ -43,7 +44,7 @@ SITE_ID=rudimartinsen.com
 ```
 
 ```
-docker run --rm --env-file env.list rumart/plausibleslack:0.3.0
+docker run --rm --env-file env.list rumart/plausibleslack:<tag>
 ```
 
 ## Build your own container
