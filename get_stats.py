@@ -37,6 +37,7 @@ if PERIOD == 'week':
 else:
     periodTxt = 'yesterday'
     prevPeriodTxt = 'last week'
+    PERIOD = 'day'
 
 headers = {'Authorization': f'Bearer {PLAUSIBLE_TOKEN}'}
 
