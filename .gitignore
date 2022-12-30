@@ -1,1 +1,4 @@
 env.list
+lib
+bin
+pyvenv.cfg
