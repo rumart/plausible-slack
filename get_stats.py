@@ -1,6 +1,11 @@
 import requests
 import logging
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+dotenv_path = Path('env.list')
+load_dotenv(dotenv_path=dotenv_path)
 
 LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
 logging.basicConfig(level=LOGLEVEL)
@@ -22,45 +27,51 @@ SLACK_CHANNEL = os.environ['SLACK_CHANNEL'] #ID of slack channel, note that your
 PLAUSIBLE_HOST = os.environ['PLAUSIBLE_HOST']
 PLAUSIBLE_TOKEN = os.environ['PLAUSIBLE_TOKEN']
 SITE_ID = os.environ['SITE_ID']
+PERIOD = os.environ['PERIOD'] #Either day or week
 
 today = datetime.today()
-yesterDay = today - timedelta(1)
-lastweek = yesterDay - timedelta(7)
-date = yesterDay.strftime('%Y-%m-%d')
-lastweekDate = lastweek.strftime('%Y-%m-%d')
+thisPer = today - timedelta(1)
+prevPer = thisPer - timedelta(7)
+date = thisPer.strftime('%Y-%m-%d')
+prevPerDate = prevPer.strftime('%Y-%m-%d')
 
+if PERIOD == 'week':
+    periodTxt = 'last week'
+    prevPeriodTxt = 'two weeks ago'
+    PERIOD = '7d'
+else:
+    periodTxt = 'yesterday'
+    prevPeriodTxt = 'last week'
 
-#realtimeUrl = f'https://{PLAUSIBLE_HOST}/api/v1/stats/realtime/visitors?site_id={SITE_ID}'
 headers = {'Authorization': f'Bearer {PLAUSIBLE_TOKEN}'}
-#r = requests.get(realtimeUrl, NULL, headers=headers)
 
-yDayUrl = f'https://{PLAUSIBLE_HOST}/api/v1/stats/aggregate?site_id={SITE_ID}&period=day&date={date}&metrics=visitors,pageviews'
-wDayUrl = f'https://{PLAUSIBLE_HOST}/api/v1/stats/aggregate?site_id={SITE_ID}&period=day&date={lastweekDate}&metrics=visitors,pageviews'
+thisPerUrl = f'https://{PLAUSIBLE_HOST}/api/v1/stats/aggregate?site_id={SITE_ID}&period={PERIOD}&date={date}&metrics=visitors,pageviews'
+prevPerUrl = f'https://{PLAUSIBLE_HOST}/api/v1/stats/aggregate?site_id={SITE_ID}&period={PERIOD}&date={prevPerDate}&metrics=visitors,pageviews'
 
-y = requests.get(yDayUrl, None, headers=headers)
-w = requests.get(wDayUrl, None, headers=headers)
+thisReq = requests.get(thisPerUrl, None, headers=headers)
+prevReq = requests.get(prevPerUrl, None, headers=headers)
 
-yResponse = y.json()
-visitors = yResponse['results']['visitors']['value']
-pageViews = yResponse['results']['pageviews']['value']
+thisResponse = thisReq.json()
+visitors = thisResponse['results']['visitors']['value']
+pageViews = thisResponse['results']['pageviews']['value']
 
-wResponse = w.json()
-wVisitors = wResponse['results']['visitors']['value']
-wPageViews = wResponse['results']['pageviews']['value']
+prevResponse = prevReq.json()
+prevVisitors = prevResponse['results']['visitors']['value']
+prevPageViews = prevResponse['results']['pageviews']['value']
 
-cVisitors = get_change(visitors,wVisitors)
+cVisitors = get_change(visitors,prevVisitors)
 cVisitorsTxt = "%.2f" % cVisitors
-cPageViews = get_change(pageViews,wPageViews)
+cPageViews = get_change(pageViews,prevPageViews)
 cPageViewsTxt = "%.2f" % cPageViews
 
 visitorChange = ''
-if visitors > wVisitors:
+if visitors > prevVisitors:
     visitorChange = 'more'
 else:
     visitorChange = 'fewer'
 
 pageViewChange = ''
-if pageViews > cPageViews:
+if pageViews > prevPageViews:
     pageViewChange = 'more'
 else:
     pageViewChange = 'fewer'
@@ -70,7 +81,7 @@ try:
 
     response = client.chat_postMessage(
         channel=SLACK_CHANNEL,
-        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors yesterday!\nThat\'s {cPageViewsTxt}% {pageViewChange} pageviews and {cVisitorsTxt}% {visitorChange} visitors than last week'
+        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors {periodTxt}!\nThat\'s {cPageViewsTxt}% {pageViewChange} pageviews and {cVisitorsTxt}% {visitorChange} visitors than {prevPeriodTxt}'
     )
 except SlackApiError as e:
     # You will get a SlackApiError if "ok" is False
