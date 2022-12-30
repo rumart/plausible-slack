@@ -18,6 +18,8 @@ The script accepts the environment variables:
     - Site ID as created in the Plausible host
 - LOGLEVEL
     - Log level, defaults to INFO
+- PERIOD
+    - Stat period, day or week (last 7 days) supported
 
 ## Run as a container
 
