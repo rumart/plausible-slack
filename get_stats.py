@@ -1,11 +1,6 @@
 import requests
 import logging
 import os
-from pathlib import Path
-from dotenv import load_dotenv
-
-dotenv_path = Path('env.list')
-load_dotenv(dotenv_path=dotenv_path)
 
 LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
 logging.basicConfig(level=LOGLEVEL)
