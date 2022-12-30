@@ -22,7 +22,7 @@ SLACK_CHANNEL = os.environ['SLACK_CHANNEL'] #ID of slack channel, note that your
 PLAUSIBLE_HOST = os.environ['PLAUSIBLE_HOST']
 PLAUSIBLE_TOKEN = os.environ['PLAUSIBLE_TOKEN']
 SITE_ID = os.environ['SITE_ID']
-PERIOD = os.environ['PERIOD'] #Either day or week
+PERIOD = os.environ.get('PERIOD', 'day') #Either day or week
 
 today = datetime.today()
 thisPer = today - timedelta(1)
@@ -37,7 +37,6 @@ if PERIOD == 'week':
 else:
     periodTxt = 'yesterday'
     prevPeriodTxt = 'last week'
-    PERIOD = 'day'
 
 headers = {'Authorization': f'Bearer {PLAUSIBLE_TOKEN}'}
 
