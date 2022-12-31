@@ -24,6 +24,8 @@ PLAUSIBLE_TOKEN = os.environ['PLAUSIBLE_TOKEN']
 SITE_ID = os.environ['SITE_ID']
 PERIOD = os.environ.get('PERIOD', 'day') #Either day or week
 
+plausibleLink = f"https://{PLAUSIBLE_HOST}/{SITE_ID}"
+
 today = datetime.today()
 thisPer = today - timedelta(1)
 prevPer = thisPer - timedelta(7)
@@ -76,7 +78,7 @@ try:
 
     response = client.chat_postMessage(
         channel=SLACK_CHANNEL,
-        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors {periodTxt}!\nThat\'s {cPageViewsTxt}% {pageViewChange} pageviews and {cVisitorsTxt}% {visitorChange} visitors than {prevPeriodTxt}'
+        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors {periodTxt}!\nThat\'s {cPageViewsTxt}% {pageViewChange} pageviews and {cVisitorsTxt}% {visitorChange} visitors than {prevPeriodTxt}\n{plausibleLink}'
     )
 except SlackApiError as e:
     # You will get a SlackApiError if "ok" is False
