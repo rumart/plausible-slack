@@ -94,7 +94,7 @@ try:
 
     response = client.chat_postMessage(
         channel=SLACK_CHANNEL,
-        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors {periodTxt}!\nThat\'s {cPageViewsTxt}% {pageViewChange} pageviews and {cVisitorsTxt}% {visitorChange} visitors than {prevPeriodTxt}\nThe most visited page was *{topPage}* with *{pageVisitors}* visitors\nMost requests came from *{topCountry}* with *{countryVisitors}* visitors\n{plausibleLink}'
+        text=f'Your site {SITE_ID} had {pageViews} pageviews from {visitors} visitors {periodTxt}!\nThat\'s *{cPageViewsTxt}%* {pageViewChange} pageviews and *{cVisitorsTxt}%* {visitorChange} visitors than {prevPeriodTxt}\nThe most visited page was *{topPage}* with *{pageVisitors}* visitors\nMost requests came from *{topCountry}* with *{countryVisitors}* visitors\n{plausibleLink}'
     )
 except SlackApiError as e:
     # You will get a SlackApiError if "ok" is False
