@@ -22,7 +22,7 @@ SLACK_CHANNEL = os.environ['SLACK_CHANNEL'] #ID of slack channel, note that your
 PLAUSIBLE_HOST = os.environ['PLAUSIBLE_HOST']
 PLAUSIBLE_TOKEN = os.environ['PLAUSIBLE_TOKEN']
 SITE_ID = os.environ['SITE_ID']
-PERIOD = os.environ.get('PERIOD', 'day') #Either day or week (7d)
+PERIOD = os.environ.get('PERIOD', 'day') #Either day or week (7d), defaults to day
 TOPPAGE = True#os.environ.get('TOPCOUNTRY', True) #Pull top page visits
 TOPCOUNTRY = True#os.environ.get('TOPCOUNTRY', True) #Pull top country
 
